@@ -1,23 +1,34 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import loginImage from "../../assets/images/login/login.svg";
+import signUpImage from "../../../assets/images/login/login.svg";
 
-const Login = () => {
-  const handleLogin = (event) => {
+const SignUp = () => {
+  const handleSignUp = (event) => {
     event.preventDefault();
     console.log("Clicked");
   };
 
   return (
-    // min-h-screen bg-base-200
     <div className="hero w-full my-20 ">
       <div className="hero-content grid gap-20 grid-cols-1 lg:grid-cols-2 ">
         <div className="text-center lg:text-left">
-          <img className="w-3/4 mx-auto" src={loginImage} alt="" />
+          <img className="w-3/4 mx-auto" src={signUpImage} alt="" />
         </div>
         <div className="card flex-shrink-0 w-full mx-auto max-w-sm shadow-2xl bg-base-100 py-10">
-          <h1 className="text-5xl font-bold text-center ">Login</h1>
-          <form onSubmit={handleLogin} className="card-body">
+          <h1 className="text-5xl font-bold text-center ">Sign Up</h1>
+          <form onSubmit={handleSignUp} className="card-body">
+            {/* Name */}
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">Name</span>
+              </label>
+              <input
+                type="text"
+                name="name"
+                placeholder="name"
+                className="input input-bordered"
+              />
+            </div>
             {/* Email */}
             <div className="form-control">
               <label className="label">
@@ -43,11 +54,10 @@ const Login = () => {
                 className="input input-bordered"
                 required
               />
-              {/* Password reset */}
               <label className="label">
-                <a href="/" className="label-text-alt link link-hover">
+                {/* <a href="/" className="label-text-alt link link-hover">
                   Forgot password?
-                </a>
+                </a> */}
               </label>
             </div>
             <div className="form-control mt-6">
@@ -59,9 +69,9 @@ const Login = () => {
             </div>
           </form>
           <p className="text-center text-slate-500	">
-            New to genius car?{" "}
-            <Link className="text-[#F000B8] font-bold " to={"/signup"}>
-              Sign Up
+            Already have an account?{" "}
+            <Link className="text-[#F000B8] font-bold " to={"/login"}>
+              Login
             </Link>
           </p>
         </div>
@@ -70,4 +80,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default SignUp;
