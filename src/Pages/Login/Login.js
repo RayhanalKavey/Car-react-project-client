@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import loginImage from "../../assets/images/login/login.svg";
+import { AuthContext } from "../../Context/AuthProvider/AuthProvider";
 
 const Login = () => {
+  const { user } = useContext(AuthContext);
+
   const handleLogin = (event) => {
     event.preventDefault();
     console.log("Clicked");
