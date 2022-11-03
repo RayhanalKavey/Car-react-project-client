@@ -1,10 +1,31 @@
 import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import loginImage from "../../assets/images/login/login.svg";
 import { AuthContext } from "../../Context/AuthProvider/AuthProvider";
 
 const Login = () => {
-  const { setUser, logIn } = useContext(AuthContext);
+  const { setUser, logIn, googleLogin } = useContext(AuthContext);
+
+  //------------- redirect user
+  const navigate = useNavigate();
+  //------------- user location where they want to go
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
+
+  //LogIn/sign up with google
+  const handleGoogleLogin = () => {
+    googleLogin()
+      .then((result) => {
+        const user = result.user;
+        setUser(user);
+        alert("Logged in successfully!!");
+        //Navigate user to the desired path
+        navigate(from, { replace: true });
+      })
+      .catch((error) => {
+        alert(error.message);
+      });
+  };
 
   const handleLogin = (event) => {
     event.preventDefault();
@@ -19,6 +40,7 @@ const Login = () => {
         const user = result.user;
         setUser(user);
         alert("User logged in successfully.");
+        // event.target.reset();
       })
       .catch((error) => {
         alert(`${error.message}`);
@@ -74,6 +96,7 @@ const Login = () => {
                 value="Login"
               />
             </div>
+            <button onClick={handleGoogleLogin}>Google</button>
           </form>
           <p className="text-center text-slate-500	">
             New to genius car?{" "}

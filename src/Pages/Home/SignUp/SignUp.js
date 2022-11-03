@@ -1,10 +1,16 @@
 import React, { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import signUpImage from "../../../assets/images/login/login.svg";
 import { AuthContext } from "../../../Context/AuthProvider/AuthProvider";
 
 const SignUp = () => {
-  const { setUser, createUser } = useContext(AuthContext);
+  const { setUser, createUser, googleLogin } = useContext(AuthContext);
+
+  //------------- redirect user
+  const navigate = useNavigate();
+  //------------- user location where they want to go
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
 
   // Check if the term and conditions accepted or not
   const [acceptTerms, setAcceptTerms] = useState(false);
@@ -84,6 +90,21 @@ const SignUp = () => {
     }
   };
 
+  //LogIn/sign up with google
+  const handleGoogleLogin = () => {
+    googleLogin()
+      .then((result) => {
+        const user = result.user;
+        setUser(user);
+        alert("Logged in successfully!!");
+        //Navigate user to the desired path
+        navigate(from, { replace: true });
+      })
+      .catch((error) => {
+        alert(error.message);
+      });
+  };
+
   //sln Handle submit button
   const handleSignUp = (event) => {
     event.preventDefault();
@@ -99,6 +120,8 @@ const SignUp = () => {
         setUser(user);
         alert("User cleated successfully.");
         event.target.reset();
+        //Navigate user to the desired path
+        navigate(from, { replace: true });
       })
       .catch((error) => {
         alert(`${error.message}`);
@@ -197,6 +220,7 @@ const SignUp = () => {
                 value="Sign Up"
               />
             </div>
+            <button onClick={handleGoogleLogin}>Google</button>
           </form>
           <p className="text-center text-slate-500	">
             Already have an account?{" "}
