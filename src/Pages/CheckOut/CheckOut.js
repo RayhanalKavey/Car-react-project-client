@@ -24,6 +24,25 @@ const CheckOut = () => {
       phone,
       message,
     };
+    // if(phone.length>10){
+    //   alert('Phone number should be 10 character or longer.')
+    // }
+    ///send data to the server
+    fetch("http://localhost:5005/orders", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(order),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.acknowledged) {
+          alert("Order placed successfully");
+          form.reset();
+        }
+      })
+      .catch((err) => alert(err.message));
   };
 
   return (

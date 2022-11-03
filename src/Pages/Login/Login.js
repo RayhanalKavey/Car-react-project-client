@@ -32,7 +32,6 @@ const Login = () => {
     const form = event.target;
     const email = form.email.value;
     const password = form.password.value;
-    console.log("Clicked");
 
     //Log In with email and password
     logIn(email, password)
@@ -40,7 +39,9 @@ const Login = () => {
         const user = result.user;
         setUser(user);
         alert("User logged in successfully.");
-        // event.target.reset();
+        event.target.reset();
+        //Navigate user to the desired path
+        navigate(from, { replace: true });
       })
       .catch((error) => {
         alert(`${error.message}`);
