@@ -4,11 +4,25 @@ import loginImage from "../../assets/images/login/login.svg";
 import { AuthContext } from "../../Context/AuthProvider/AuthProvider";
 
 const Login = () => {
-  const { user } = useContext(AuthContext);
+  const { setUser, logIn } = useContext(AuthContext);
 
   const handleLogin = (event) => {
     event.preventDefault();
+    const form = event.target;
+    const email = form.email.value;
+    const password = form.password.value;
     console.log("Clicked");
+
+    //Log In with email and password
+    logIn(email, password)
+      .then((result) => {
+        const user = result.user;
+        setUser(user);
+        alert("User logged in successfully.");
+      })
+      .catch((error) => {
+        alert(`${error.message}`);
+      });
   };
 
   return (
