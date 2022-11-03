@@ -1,7 +1,9 @@
+import { toHaveStyle } from "@testing-library/jest-dom/dist/matchers";
 import React, { useContext } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import loginImage from "../../assets/images/login/login.svg";
 import { AuthContext } from "../../Context/AuthProvider/AuthProvider";
+import toast, { Toaster } from "react-hot-toast";
 
 const Login = () => {
   const { setUser, logIn, googleLogin } = useContext(AuthContext);
@@ -38,7 +40,7 @@ const Login = () => {
       .then((result) => {
         const user = result.user;
         setUser(user);
-        alert("User logged in successfully.");
+        toast.success("User logged in successfully.");
         event.target.reset();
         //Navigate user to the desired path
         navigate(from, { replace: true });
