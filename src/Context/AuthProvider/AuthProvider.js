@@ -40,13 +40,13 @@ const AuthProvider = ({ children }) => {
   //On auth state change  //---------Observe user
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      // console.log("Inside auth state change", currentUser);
+      console.log("Inside auth state change", currentUser);
       setUser(currentUser);
     });
     ///leading state to prevent the reload log out issue
     setLoading(false);
     return () => {
-      unsubscribe();
+      return unsubscribe();
     };
   }, []);
 

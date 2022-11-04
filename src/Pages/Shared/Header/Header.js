@@ -1,16 +1,22 @@
 import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import logo from "../../../assets/logo.svg";
 import { AuthContext } from "../../../Context/AuthProvider/AuthProvider";
 
 const Header = () => {
   const { user, setUser, logout } = useContext(AuthContext);
+  //------------- redirect user
+  const navigate = useNavigate();
+  //------------- user location where they want to go
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
 
   /// Handle log out
   const handleSignOut = () => {
     logout()
       .then((result) => {
         alert("User logged out!");
+        navigate(from, { replace: true });
         setUser({});
       })
       .catch((error) => {
@@ -22,10 +28,24 @@ const Header = () => {
     <>
       <li className="font-semibold">
         <Link to={"/"}>Home</Link>
-        <Link to={"/login"}>Login</Link>
-        <div>{user?.email}</div>
-        <Link onClick={handleSignOut}>Logout</Link>
       </li>
+      <li className="font-semibold">
+        <Link to={"/orders"}>Orders</Link>
+      </li>
+      {user?.email ? (
+        <>
+          <li className="font-semibold">
+            <Link onClick={handleSignOut}>Logout</Link>
+          </li>
+          <li className="self-center">{user?.email}</li>
+        </>
+      ) : (
+        <>
+          <li className="font-semibold">
+            <Link to={"/login"}>Login</Link>
+          </li>
+        </>
+      )}
     </>
   );
 
