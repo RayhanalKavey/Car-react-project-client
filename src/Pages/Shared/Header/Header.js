@@ -16,7 +16,7 @@ const Header = () => {
     logout()
       .then((result) => {
         alert("User logged out!");
-        navigate(from, { replace: true });
+        // navigate(from, { replace: true });
         setUser({});
       })
       .catch((error) => {
@@ -29,22 +29,20 @@ const Header = () => {
       <li className="font-semibold">
         <Link to={"/"}>Home</Link>
       </li>
-      <li className="font-semibold">
-        <Link to={"/orders"}>Orders</Link>
-      </li>
       {user?.email ? (
         <>
           <li className="font-semibold">
+            <Link to={"/orders"}>Orders</Link>
+          </li>
+          <li className="font-semibold">
             <Link onClick={handleSignOut}>Logout</Link>
           </li>
-          <li className="self-center">{user?.email}</li>
+          {/* <li className="self-center">{user?.email}</li> */}
         </>
       ) : (
-        <>
-          <li className="font-semibold">
-            <Link to={"/login"}>Login</Link>
-          </li>
-        </>
+        <li className="font-semibold">
+          <Link to={"/login"}>Login</Link>
+        </li>
       )}
     </>
   );

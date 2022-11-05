@@ -3,17 +3,28 @@ import { AuthContext } from "../../Context/AuthProvider/AuthProvider";
 import OrderRow from "./OrderRow";
 
 const Orders = () => {
-  const { user } = useContext(AuthContext);
+  const { user, logout } = useContext(AuthContext);
 
   //get data using query url
   const [orders, setOrders] = useState([]);
 
-  //user er email jokhn change hole eta call hobe.
+  //user er email jokhn change hole eta call hobe. //notE get from local storage jwt. Api call korle backend e authorization information ta pathai dibe
   useEffect(() => {
-    fetch(`http://localhost:5005/orders?email=${user?.email}`)
-      .then((res) => res.json())
+    fetch(`http://localhost:5005/orders?email=${user?.email}`, {
+      // workinG
+      headers: {
+        authorization: ` Bearer ${localStorage.getItem("genius-token")}`, //this information will be sent to back end
+      },
+    })
+      .then((res) => {
+        // workinG
+        if (res.status === 401 || res.status === 403) {
+          return logout();
+        }
+        return res.json();
+      })
       .then((data) => setOrders(data));
-  }, [user?.email]);
+  }, [user?.email, logout]);
 
   //delete order from server and ui
   const handleDelete = (id) => {
@@ -61,32 +72,37 @@ const Orders = () => {
   };
 
   return (
-    <div className="overflow-x-auto w-full">
-      <table className="table w-full">
-        {/* <!-- head --> */}
-        <thead>
-          <tr>
-            <th>
-              <label>Delete</label>
-            </th>
-            <th>Name</th>
-            <th>Job</th>
-            <th>Favorite Color</th>
-            <th>Message</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {orders.map((order) => (
-            <OrderRow
-              key={order._id}
-              order={order}
-              handleDelete={handleDelete}
-              handleStatusUpdate={handleStatusUpdate}
-            ></OrderRow>
-          ))}
-        </tbody>
-      </table>
+    <div>
+      <h3 className="text-5xl text-center my-5">
+        You have {orders.length} Orders
+      </h3>
+      <div className="overflow-x-auto w-full">
+        <table className="table w-full">
+          {/* <!-- head --> */}
+          <thead>
+            <tr>
+              <th>
+                <label>Delete</label>
+              </th>
+              <th>Name</th>
+              <th>Job</th>
+              <th>Favorite Color</th>
+              <th>Message</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {orders.map((order) => (
+              <OrderRow
+                key={order._id}
+                order={order}
+                handleDelete={handleDelete}
+                handleStatusUpdate={handleStatusUpdate}
+              ></OrderRow>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

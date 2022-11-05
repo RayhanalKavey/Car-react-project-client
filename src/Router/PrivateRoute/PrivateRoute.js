@@ -9,8 +9,7 @@ const PrivateRoute = ({ children }) => {
   const location = useLocation();
   if (loading) {
     // Use spinner here
-    // return <progress className="progress w-56"></progress>;
-    return <div>loading..........</div>;
+    return <h3>loading..........</h3>;
   }
   if (!user?.uid) {
     return <Navigate to="/login" state={{ from: location }} replace></Navigate>;

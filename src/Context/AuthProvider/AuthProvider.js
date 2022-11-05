@@ -42,9 +42,9 @@ const AuthProvider = ({ children }) => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       console.log("Inside auth state change", currentUser);
       setUser(currentUser);
+      ///loading state to prevent the reload log out issue
+      setLoading(false);
     });
-    ///leading state to prevent the reload log out issue
-    setLoading(false);
     return () => {
       return unsubscribe();
     };
@@ -52,6 +52,8 @@ const AuthProvider = ({ children }) => {
 
   //------------Sign-out
   const logout = () => {
+    //clear local storage when logout
+    localStorage.removeItem("genius-token");
     ///loading state to prevent the reload log out issue
     setLoading(true);
     return signOut(auth);

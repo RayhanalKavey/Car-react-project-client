@@ -20,6 +20,7 @@ const Login = () => {
         const user = result.user;
         setUser(user);
         alert("Logged in successfully!!");
+
         //Navigate user to the desired path
         navigate(from, { replace: true });
       })
@@ -38,11 +39,31 @@ const Login = () => {
     logIn(email, password)
       .then((result) => {
         const user = result.user;
-        setUser(user);
-        toast.success("User logged in successfully.");
+
+        //workinG get jwt token starT
+        const currentUser = {
+          email: user.email,
+        };
+        fetch(`http://localhost:5005/jwt`, {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify(currentUser),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            // console.log(data);
+            //local storage is the easiest but not the best place to store jwt token
+            localStorage.setItem("genius-token", data.token);
+            //Navigate user to the desired path
+            setUser(user);
+            navigate(from, { replace: true });
+            toast.success("User logged in successfully.");
+          });
+        // get jwt token enD
+
         event.target.reset();
-        //Navigate user to the desired path
-        navigate(from, { replace: true });
       })
       .catch((error) => {
         alert(`${error.message}`);
